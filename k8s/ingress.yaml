@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goserver-ingress
+  annotations:
+    ingressClassName: nginx
+    cert-manager.io/cluster-issuer: letsencrypt
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+  - host: goserver.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: goserver-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - goserver.local
+    secretName: letsencrypt-tls
+  
